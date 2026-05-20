@@ -161,10 +161,13 @@ private fun NavHostController.navigateTopLevel(dest: TopLevelDestination) {
         TopLevelDestination.Traffic  -> Destinations.Traffic
         TopLevelDestination.Logs     -> Destinations.Logs
     }
-    navigate(route) {
-        popUpTo(graph.findStartDestination().id) { saveState = true }
-        launchSingleTop = true
-        restoreState = true
+    val popped = popBackStack(route = route, inclusive = false, saveState = false)
+    if (!popped) {
+        navigate(route) {
+            popUpTo(graph.findStartDestination().id) { saveState = true }
+            launchSingleTop = true
+            restoreState = true
+        }
     }
 }
 
