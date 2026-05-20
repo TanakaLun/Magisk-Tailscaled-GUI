@@ -34,8 +34,26 @@ data class UpdateInfo(
 
 // 版本号比较
 fun compareVersions(version1: String, version2: String): Int {
-    val parts1 = version1.split(".").map { it.toIntOrNull() ?: 0 }
-    val parts2 = version2.split(".").map { it.toIntOrNull() ?: 0 }
+    fun normalize(version: String): List<Int> {
+        val parts = mutableListOf<Int>()
+        val regex = Regex("""(\d+)(?:-dev\.(\d+))?""")
+
+        version.split(".").forEach { part ->
+            val match = regex.find(part)
+            if (match != null) {
+                val major = match.groupValues[1].toIntOrNull() ?: 0
+                val dev = match.groupValues[2].toIntOrNull() ?: -1
+                parts.add(major)
+                if (dev >= 0) parts.add(dev)
+            } else {
+                parts.add(part.toIntOrNull() ?: 0)
+            }
+        }
+        return parts
+    }
+
+    val parts1 = normalize(version1)
+    val parts2 = normalize(version2)
 
     for (i in 0 until maxOf(parts1.size, parts2.size)) {
         val num1 = if (i < parts1.size) parts1[i] else 0
