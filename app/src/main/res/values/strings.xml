@@ -125,6 +125,9 @@
     <string name="nav_customizer_subtitle">Choose which tabs appear in the bottom bar</string>
     <string name="nav_customizer_hint">Home and Settings are always visible. Toggle other tabs on or off.</string>
     <string name="nav_customizer_pinned">Always shown</string>
+    <string name="project_name">Magisk-Tailscaled-GUI</string>
+    <string name="project_description">A GUI For Magisk-Tailscaled</string>
+    <string name="github_repo">GitHub Repository</string>
 
     <!-- Drop -->
     <string name="drop_label">Drop daemon</string>
@@ -161,8 +164,8 @@
     <string name="offline_now">Offline</string>
     <string name="dir_created">Directory created: %s</string>
     <string name="dir_create_failed">Failed to create directory: %s</string>
-    <string name="dir_create_permission_denied">Permission denied, cannot create directory %s: %s</string>
-    <string name="dir_create_error">Error creating directory %s: %s</string>
+    <string name="dir_create_permission_denied">Permission denied, cannot create directory %1$s: %2$s</string>
+    <string name="dir_create_error">Error creating directory %1$s: %2$s</string>
     <string name="drop_start_failed_dir_invalid">Start failed, invalid directory: %s</string>
     <string name="drop_failed_dir_invalid">Drop protection start failed: invalid directory</string>
 
