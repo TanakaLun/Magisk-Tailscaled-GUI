@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 1. 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 2. 安装 JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: 3. 赋予执行权限
+        run: chmod +x gradlew
+      
+      - name: 4. 修改配置文件（兼容 CI）
+        run: |
+          sed -i 's/kotlin = ".*"/kotlin = "2.0.21"/' gradle/libs.versions.toml
+          sed -i 's/ksp = ".*"/ksp = "2.0.21-1.0.28"/' gradle/libs.versions.toml
+          echo "android.disallowKotlinSourceSets=false" >> gradle.properties
+          
+      - name: 5. 解密签名文件
+        env:
+          ENCODED_KEYSTORE: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PATH: ${{ runner.temp }}/keystore.jks
+        run: |
+          echo "$ENCODED_KEYSTORE" | base64 -d > "$KEYSTORE_PATH"
+          echo "KEYSTORE_PATH=$KEYSTORE_PATH" >> $GITHUB_ENV
+
+      - name: 6. 打包并签名 Release APK
+        run: |
+          ./gradlew clean --refresh-dependencies
+          ./gradlew assembleRelease
+        env:
+          STORE_FILE: ${{ env.KEYSTORE_PATH }}
+          STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: 7. 获取短 commit hash
+        id: vars
+        run: echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: 8. 创建/更新 Pre-release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: "latest-build"
+          name: "最新构建 - commit ${{ steps.vars.outputs.short_sha }}"
+          body: |
+            ## 自动构建版本
+            - Commit: ${{ github.sha }}
+            - 构建时间: ${{ github.event.repository.updated_at }}
+          artifacts: "app/build/outputs/apk/release/*.apk"
+          prerelease: true
+          allowUpdates: true                     # 允许更新已有的 Release
+          omitBodyDuringUpdate: false            # 更新时保留新的 body
+          omitNameDuringUpdate: false            # 更新时更新名称
+          replacesArtifacts: true                # 替换旧的 APK
+          token: ${{ secrets.GITHUB_TOKEN }}

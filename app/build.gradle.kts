@@ -17,9 +17,29 @@ android {
         applicationId = "top.cenmin.tailcontrol"
         minSdk = 29
         targetSdk = 36
+
+        // 动态版本号
+        val isCI = System.getenv("CI") == "true"
+        val buildNumber = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull()
+        val shortSha = System.getenv("GITHUB_SHA")?.take(7) ?: "unknown"
+
         versionCode = 10
-        versionName = "2.1.1"
+        versionName = if (isCI && buildNumber != null) {
+            "2.1.1-dev.${buildNumber}.${shortSha}"
+        } else {
+            "2.1.1"
+        }
+
         vectorDrawables { useSupportLibrary = true }
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = System.getenv("STORE_FILE")?.let { file(it) }
+            storePassword = System.getenv("STORE_PASSWORD")
+            keyAlias = System.getenv("KEY_ALIAS")
+            keyPassword = System.getenv("KEY_PASSWORD")
+        }
     }
 
     buildFeatures {
@@ -43,7 +63,8 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        release {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
