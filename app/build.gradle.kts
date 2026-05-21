@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
-android { 
+android {
     namespace = "top.cenmin.tailcontrol"
     compileSdk = 36
     buildToolsVersion = "36.0.0"
@@ -18,7 +18,6 @@ android {
         minSdk = 29
         targetSdk = 36
 
-        // 动态版本号
         val isCI = System.getenv("CI") == "true"
         val buildNumber = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull()
         val shortSha = System.getenv("GITHUB_SHA")?.take(7) ?: "unknown"
@@ -65,8 +64,35 @@ android {
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
+
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("arm64-v8a", "armeabi-v7a")
+            isUniversalApk = true
+        }
+    }
+}
+androidComponents {
+    onVariants { variant ->
+        val versionName = variant.outputs.firstOrNull()
+            ?.versionName
+            ?.orNull
+            ?: android.defaultConfig.versionName
+            ?: "unknown"
+
+        variant.outputs.forEach { output ->
+            val abi = output.filters
+                .firstOrNull { it.filterType.name == "ABI" }
+                ?.identifier
+                ?: "universal"
+            output.outputFileName.set("TailControl-${versionName}-${abi}.apk")
         }
     }
 }

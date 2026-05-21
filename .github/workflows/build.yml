@@ -69,4 +69,34 @@ jobs:
           omitBodyDuringUpdate: false            # 更新时保留新的 body
           omitNameDuringUpdate: false            # 更新时更新名称
           replacesArtifacts: true                # 替换旧的 APK
+          removeArtifacts: true 				
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: 9. 推送到 Telegram
+        if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+        env:
+          CHANNEL_ID: ${{ secrets.TELEGRAM_TO }}
+          BOT_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          COMMIT_MESSAGE: |
+            **Github 自动构建**
+            
+            **版本:** ${{ steps.vars.outputs.short_sha }}
+            **提交:** ${{ github.event.head_commit.message }}
+            
+            [查看详情](${{ github.event.head_commit.url }})
+        run: |
+          APK_FILE=$(find app/build/outputs/apk/release -name "*universal.apk" -type f | head -n 1)
+          
+          if [ -z "$APK_FILE" ]; then
+            echo "未找到文件"
+            exit 1
+          fi
+          
+          # 转义 MarkdownV2 特殊字符
+          ESCAPED_MSG=$(echo "$COMMIT_MESSAGE" | sed 's/[!_*()\[\]\\]/\\&/g')
+          
+          # 发送到 Telegram
+          curl -v "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument" \
+            -F "chat_id=${CHANNEL_ID}" \
+            -F "document=@${APK_FILE}" \
+            -F "caption=${ESCAPED_MSG}" \
+            -F "parse_mode=MarkdownV2"
