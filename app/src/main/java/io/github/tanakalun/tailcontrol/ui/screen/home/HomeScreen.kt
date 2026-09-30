@@ -3,6 +3,8 @@ package io.github.tanakalun.tailcontrol.ui.screen.home
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color as ComposeColor
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -102,13 +105,17 @@ fun HomeScreen(
             isRefreshing = ui.isRefreshing,
             onRefresh = viewModel::manualRefresh,
             refreshTexts = refreshTexts,
-            modifier = Modifier
-                .padding(padding)
-                .fillMaxSize(),
+            contentPadding = padding,
+            modifier = Modifier.fillMaxSize(),
         ) {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(bottom = 24.dp + bottomInset),
+                contentPadding = PaddingValues(
+                    top = padding.calculateTopPadding(),
+                    start = padding.calculateStartPadding(LocalLayoutDirection.current),
+                    end = padding.calculateEndPadding(LocalLayoutDirection.current),
+                    bottom = padding.calculateBottomPadding() + 24.dp + bottomInset,
+                ),
                 modifier = Modifier
                     .fillMaxSize()
                     .nestedScroll(scrollBehavior.nestedScrollConnection)

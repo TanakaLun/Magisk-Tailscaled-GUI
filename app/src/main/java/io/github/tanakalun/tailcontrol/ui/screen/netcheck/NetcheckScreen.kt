@@ -91,7 +91,6 @@ fun NetcheckScreen(
     ) { padding ->
         Box(
             modifier = Modifier
-                .padding(padding)
                 .fillMaxSize()
                 .then(if (backdrop != null) Modifier.layerBackdrop(backdrop) else Modifier),
         ) {
@@ -99,7 +98,7 @@ fun NetcheckScreen(
             modifier = Modifier
                 .fillMaxSize(),
         ) {
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(padding.calculateTopPadding() + 8.dp))
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -152,7 +151,7 @@ fun NetcheckScreen(
                             .nestedScroll(scrollBehavior.nestedScrollConnection)
                             .overScrollVertical()
                             .scrollEndHaptic(),
-                        contentPadding = PaddingValues(bottom = 16.dp + bottomInset),
+                        contentPadding = PaddingValues(bottom = padding.calculateBottomPadding() + 16.dp + bottomInset),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         item {

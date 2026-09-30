@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -96,7 +98,6 @@ fun AccountsScreen(
     ) { padding ->
         Box(
             modifier = Modifier
-                .padding(padding)
                 .fillMaxSize()
                 .then(if (backdrop != null) Modifier.layerBackdrop(backdrop) else Modifier),
         ) {
@@ -106,7 +107,12 @@ fun AccountsScreen(
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .overScrollVertical()
                 .scrollEndHaptic(),
-            contentPadding = PaddingValues(vertical = 8.dp),
+            contentPadding = PaddingValues(
+                top = padding.calculateTopPadding() + 8.dp,
+                start = padding.calculateStartPadding(LocalLayoutDirection.current),
+                end = padding.calculateEndPadding(LocalLayoutDirection.current),
+                bottom = padding.calculateBottomPadding() + 8.dp,
+            ),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             item {

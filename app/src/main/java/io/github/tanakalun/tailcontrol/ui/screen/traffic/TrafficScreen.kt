@@ -59,7 +59,6 @@ fun TrafficScreen(
     ) { padding ->
         Box(
             modifier = Modifier
-                .padding(padding)
                 .fillMaxSize()
                 .then(if (backdrop != null) Modifier.layerBackdrop(backdrop) else Modifier),
         ) {
@@ -72,7 +71,7 @@ fun TrafficScreen(
                 .scrollEndHaptic(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(padding.calculateTopPadding() + 4.dp))
 
             if (!ui.hasData) {
                 Text(
@@ -120,7 +119,7 @@ fun TrafficScreen(
                     }
                 }
             }
-            Spacer(Modifier.height(bottomInset))
+            Spacer(Modifier.height(padding.calculateBottomPadding() + bottomInset))
         }
         }
     }

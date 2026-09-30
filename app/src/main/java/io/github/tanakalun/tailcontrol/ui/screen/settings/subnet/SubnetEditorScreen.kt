@@ -98,7 +98,6 @@ fun SubnetEditorScreen(
     ) { padding ->
         Box(
             modifier = Modifier
-                .padding(padding)
                 .fillMaxSize()
                 .then(if (backdrop != null) Modifier.layerBackdrop(backdrop) else Modifier),
         ) {
@@ -109,7 +108,10 @@ fun SubnetEditorScreen(
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .overScrollVertical()
                 .scrollEndHaptic(),
-            contentPadding = PaddingValues(vertical = 8.dp),
+            contentPadding = PaddingValues(
+                top = padding.calculateTopPadding() + 8.dp,
+                bottom = padding.calculateBottomPadding() + 8.dp,
+            ),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             itemsIndexed(ui.rows) { idx, value ->

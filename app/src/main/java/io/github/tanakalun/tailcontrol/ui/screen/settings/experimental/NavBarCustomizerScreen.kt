@@ -2,6 +2,7 @@ package io.github.tanakalun.tailcontrol.ui.screen.settings.experimental
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -77,7 +78,6 @@ fun NavBarCustomizerScreen(
     ) { padding ->
         Box(
             modifier = Modifier
-                .padding(padding)
                 .fillMaxSize()
                 .then(if (backdrop != null) Modifier.layerBackdrop(backdrop) else Modifier),
         ) {
@@ -90,6 +90,7 @@ fun NavBarCustomizerScreen(
                 .overScrollVertical()
                 .scrollEndHaptic(),
         ) {
+            Spacer(Modifier.height(padding.calculateTopPadding()))
             Card(
                 Modifier
                     .fillMaxWidth()
@@ -116,6 +117,7 @@ fun NavBarCustomizerScreen(
                     }
                 }
             }
+            Spacer(Modifier.height(padding.calculateBottomPadding()))
         }
         }
     }

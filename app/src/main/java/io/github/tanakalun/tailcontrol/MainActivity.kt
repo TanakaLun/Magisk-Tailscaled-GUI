@@ -192,7 +192,13 @@ fun MainNavHost() {
     val backStack = rememberNavBackStack<Route>(Route.Main)
     val navigator = remember { Navigator(backStack) }
 
-    val pagerState = rememberPagerState(pageCount = { allTabDestinations.size })
+    // 可见 tab（受 NavBarCustomizer 隐藏项控制）；pager 页集合跟随它收缩，
+    // 隐藏某 tab 即真正从页面集合中移除（无入口、不可滑动到）。
+    val visibleDestinations = remember(navBarUi.hiddenItems) {
+        allTabDestinations.filter { it.name !in navBarUi.hiddenItems }
+    }
+
+    val pagerState = rememberPagerState(pageCount = { visibleDestinations.size })
     val mainPagerState = rememberMainPagerState(pagerState)
     val isSubPage = backStack.size > 1
 
@@ -200,12 +206,15 @@ fun MainNavHost() {
         mainPagerState.syncPage()
     }
 
-    // 可见 tab（受 NavBarCustomizer 隐藏项控制）
-    val visibleDestinations = remember(navBarUi.hiddenItems) {
-        allTabDestinations.filter { it.name !in navBarUi.hiddenItems }
+    // 可见列表收缩后，若当前页已被隐藏则回落 Home（Home 固定不可隐藏）
+    LaunchedEffect(visibleDestinations.size) {
+        if (mainPagerState.selectedPage >= visibleDestinations.size) {
+            mainPagerState.animateToPage(0)
+        }
     }
+
     val pageIndexOf: Map<TopLevelDestination, Int> =
-        allTabDestinations.withIndex().associate { (index, dest) -> dest to index }
+        visibleDestinations.withIndex().associate { (index, dest) -> dest to index }
 
     // 返回处理：栈内只有 Main 时，pager 不在首页则先回首页；否则交给 NavDisplay 弹出子页。
     BackHandler(enabled = !isSubPage && mainPagerState.selectedPage != 0) {
@@ -305,7 +314,7 @@ private fun HomeMain(
     val barColor = if (backdrop != null) ComposeColor.Transparent else MiuixTheme.colorScheme.surface
 
     if (isWideScreen) {
-        PagerContent(mainPagerState, pageIndexOf, bottomInset = 0.dp)
+        PagerContent(mainPagerState, navigationItems, bottomInset = 0.dp)
         return
     }
 
@@ -334,7 +343,7 @@ private fun HomeMain(
         ) {
             PagerContent(
                 mainPagerState,
-                pageIndexOf,
+                navigationItems,
                 bottomInset = bottomInset,
             )
         }
@@ -344,7 +353,7 @@ private fun HomeMain(
 @Composable
 private fun PagerContent(
     mainPagerState: MainPagerState,
-    pageIndexOf: Map<TopLevelDestination, Int>,
+    visibleDestinations: List<TopLevelDestination>,
     bottomInset: Dp,
 ) {
     HorizontalPager(
@@ -363,25 +372,27 @@ private fun PagerContent(
             Modifier
                 .fillMaxSize(),
         ) {
-            PagerScreen(page = page, bottomInset = bottomInset)
+            visibleDestinations.getOrNull(page)?.let { dest ->
+                PagerScreen(dest = dest, bottomInset = bottomInset)
+            }
         }
     }
 }
 
 @Composable
-private fun PagerScreen(page: Int, bottomInset: Dp) {
+private fun PagerScreen(dest: TopLevelDestination, bottomInset: Dp) {
     val navigator = LocalNavigator.current
-    when (page) {
-        0 -> HomeScreen(
+    when (dest) {
+        TopLevelDestination.Home -> HomeScreen(
             onPeerClick = { navigator.push(Route.PeerDetail(it.name)) },
             onOpenAccounts = { navigator.push(Route.Accounts) },
             onOpenLogs = { navigator.push(Route.Logs) },
             bottomInset = bottomInset,
         )
-        1 -> DropScreen(bottomInset = bottomInset)
-        2 -> NetcheckScreen(bottomInset = bottomInset)
-        3 -> TrafficScreen(bottomInset = bottomInset)
-        4 -> SettingsScreen(
+        TopLevelDestination.Drop -> DropScreen(bottomInset = bottomInset)
+        TopLevelDestination.Netcheck -> NetcheckScreen(bottomInset = bottomInset)
+        TopLevelDestination.Traffic -> TrafficScreen(bottomInset = bottomInset)
+        TopLevelDestination.Settings -> SettingsScreen(
             onOpenAccounts = { navigator.push(Route.Accounts) },
             onOpenExitNode = { navigator.push(Route.ExitNodePicker) },
             onOpenSubnet = { navigator.push(Route.SubnetEditor) },
@@ -389,6 +400,7 @@ private fun PagerScreen(page: Int, bottomInset: Dp) {
             onOpenLogs = { navigator.push(Route.Logs) },
             bottomInset = bottomInset,
         )
+        TopLevelDestination.Accounts, TopLevelDestination.Logs -> Unit
     }
 }
 

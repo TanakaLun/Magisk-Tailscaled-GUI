@@ -108,7 +108,6 @@ fun PeerDetailScreen(
     ) { padding ->
         Box(
             modifier = Modifier
-                .padding(padding)
                 .fillMaxSize()
                 .then(if (backdrop != null) Modifier.layerBackdrop(backdrop) else Modifier),
         ) {
@@ -122,7 +121,7 @@ fun PeerDetailScreen(
                 .scrollEndHaptic(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(padding.calculateTopPadding() + 4.dp))
 
             val peer = ui.peer
             if (ui.notFound || peer == null) {
@@ -258,6 +257,7 @@ fun PeerDetailScreen(
             }
 
             Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(padding.calculateBottomPadding()))
         }
         }
     }

@@ -1,12 +1,11 @@
 package io.github.tanakalun.tailcontrol.ui.component
 
-import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,6 +23,7 @@ import top.yukonga.miuix.kmp.basic.Icon
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.icon.MiuixIcons
 import top.yukonga.miuix.kmp.icon.extended.ChevronForward
+import top.yukonga.miuix.kmp.theme.MiuixTheme
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -61,18 +61,12 @@ fun DeviceCard(
             modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 12.dp, end = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Canvas(Modifier.size(10.dp)) {
-                drawCircle(if (device.online) statusColors.online else statusColors.offline)
-            }
-            Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
                 Text(device.name, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text("IP: $ipText", fontSize = 13.sp)
                     Spacer(Modifier.width(2.dp))
                     CopyIpButton(ip = ip)
-                    Spacer(Modifier.width(8.dp))
-                    Text("· ${device.os}", fontSize = 13.sp)
                 }
                 if (!device.online && !device.lastSeen.isNullOrBlank()) {
                     Text(
@@ -81,9 +75,32 @@ fun DeviceCard(
                     )
                 }
             }
+            Column(
+                modifier = Modifier.padding(start = 16.dp),
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                StatusTag(
+                    label = stringResource(
+                        if (device.online) R.string.status_online else R.string.status_offline
+                    ),
+                    backgroundColor = if (device.online) {
+                        statusColors.online.copy(alpha = 0.15f)
+                    } else {
+                        statusColors.offline.copy(alpha = 0.15f)
+                    },
+                    contentColor = if (device.online) statusColors.online else statusColors.offline,
+                )
+                StatusTag(
+                    label = device.os,
+                    backgroundColor = MiuixTheme.colorScheme.secondaryContainer,
+                    contentColor = MiuixTheme.colorScheme.onSecondaryContainer,
+                )
+            }
             Icon(
                 MiuixIcons.ChevronForward,
                 contentDescription = null,
+                modifier = Modifier.padding(start = 8.dp),
             )
         }
     }

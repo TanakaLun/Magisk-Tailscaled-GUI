@@ -120,7 +120,6 @@ fun SettingsScreen(
                                 Icon(
                                     MiuixIcons.Ok,
                                     contentDescription = stringResource(R.string.save),
-                                    tint = MiuixTheme.colorScheme.primary,
                                 )
                             }
                         }

@@ -92,7 +92,6 @@ fun ExperimentalScreen(
     ) { padding ->
         Box(
             modifier = Modifier
-                .padding(padding)
                 .fillMaxSize()
                 .then(if (backdrop != null) Modifier.layerBackdrop(backdrop) else Modifier),
         ) {
@@ -105,7 +104,7 @@ fun ExperimentalScreen(
                 .scrollEndHaptic(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(padding.calculateTopPadding() + 4.dp))
 
             // AltRepo optimization
             Card(
@@ -207,6 +206,7 @@ fun ExperimentalScreen(
                 )
             }
             Spacer(Modifier.height(80.dp))
+            Spacer(Modifier.height(padding.calculateBottomPadding()))
         }
         }
     }

@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -45,6 +47,7 @@ import io.github.tanakalun.tailcontrol.ui.theme.BlurredBar
 import io.github.tanakalun.tailcontrol.ui.theme.LocalEnableBlur
 import io.github.tanakalun.tailcontrol.ui.theme.LocalStatusColors
 import io.github.tanakalun.tailcontrol.ui.theme.rememberBlurBackdrop
+import top.yukonga.miuix.kmp.blur.layerBackdrop
 import top.yukonga.miuix.kmp.basic.ButtonDefaults
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.Icon
@@ -200,13 +203,13 @@ fun LogScreen(
         Box(
             Modifier
                 .fillMaxSize()
-                .padding(padding),
+                .then(if (backdrop != null) Modifier.layerBackdrop(backdrop) else Modifier),
         ) {
             PullToRefresh(
                 isRefreshing = false,
                 pullToRefreshState = pullToRefreshState,
                 onRefresh = viewModel::loadEarlier,
-                contentPadding = PaddingValues(top = 6.dp),
+                contentPadding = PaddingValues(top = padding.calculateTopPadding() + 6.dp),
             ) {
                 LazyColumn(
                     state = listState,
@@ -215,7 +218,11 @@ fun LogScreen(
                         .nestedScroll(scrollBehavior.nestedScrollConnection)
                         .overScrollVertical()
                         .scrollEndHaptic(),
-                    contentPadding = PaddingValues(bottom = 16.dp),
+                    contentPadding = PaddingValues(
+                        start = padding.calculateStartPadding(layoutDirection),
+                        end = padding.calculateEndPadding(layoutDirection),
+                        bottom = padding.calculateBottomPadding() + 16.dp,
+                    ),
                 ) {
                     item {
                         Column(Modifier.padding(bottom = 8.dp)) {
@@ -380,7 +387,7 @@ private fun LevelTag(level: String?) {
         fontWeight = FontWeight.SemiBold,
         color = fg,
         modifier = Modifier
-            .padding(start = 12.dp)
+            // .padding(start = 12.dp)
             .background(
                 color = bg,
                 shape = androidx.compose.foundation.shape.RoundedCornerShape(4.dp),

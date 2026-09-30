@@ -75,7 +75,6 @@ fun ExitNodePickerScreen(
                                 },
                                 imageVector = MiuixIcons.Back,
                                 contentDescription = stringResource(R.string.back),
-                                tint = MiuixTheme.colorScheme.onSurface,
                             )
                         }
                     },
@@ -84,13 +83,12 @@ fun ExitNodePickerScreen(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { viewModel.save(onBack) }) {
-                Icon(MiuixIcons.Ok, contentDescription = stringResource(R.string.save))
+                Icon(MiuixIcons.Ok, contentDescription = stringResource(R.string.save), tint = MiuixTheme.colorScheme.onPrimary)
             }
         },
     ) { padding ->
         Box(
             modifier = Modifier
-                .padding(padding)
                 .fillMaxSize()
                 .then(if (backdrop != null) Modifier.layerBackdrop(backdrop) else Modifier),
         ) {
@@ -101,7 +99,10 @@ fun ExitNodePickerScreen(
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .overScrollVertical()
                 .scrollEndHaptic(),
-            contentPadding = PaddingValues(vertical = 8.dp),
+            contentPadding = PaddingValues(
+                top = padding.calculateTopPadding() + 8.dp,
+                bottom = padding.calculateBottomPadding() + 8.dp,
+            ),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             ui.suggestion?.let { sug ->

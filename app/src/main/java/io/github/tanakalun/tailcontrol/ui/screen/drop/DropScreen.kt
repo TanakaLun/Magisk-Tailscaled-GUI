@@ -110,7 +110,6 @@ fun DropScreen(
     ) { padding ->
         Box(
             modifier = Modifier
-                .padding(padding)
                 .fillMaxSize()
                 .then(if (backdrop != null) Modifier.layerBackdrop(backdrop) else Modifier),
         ) {
@@ -123,7 +122,7 @@ fun DropScreen(
                 .scrollEndHaptic(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(padding.calculateTopPadding() + 4.dp))
 
             if (!ui.fileCommandSupported) {
                 Card(
@@ -242,7 +241,7 @@ fun DropScreen(
                 }
             }
             Spacer(Modifier.height(12.dp))
-            Spacer(Modifier.height(bottomInset))
+            Spacer(Modifier.height(padding.calculateBottomPadding() + bottomInset))
         }
         }
     }
