@@ -2,19 +2,18 @@
 agp = "9.2.0"
 kotlin = "2.3.21"
 ksp = "2.3.7"
-hilt = "2.59.2"
+hilt = "2.60.1"
 hiltNav = "1.3.0"
 composeBom = "2026.03.00"
 activityCompose = "1.13.0"
-nav = "2.9.8"
 lifecycle = "2.10.0"
 coreKtx = "1.18.0"
-material = "1.12.0"
 datastore = "1.2.1"
 serialization = "1.11.0"
 libsu = "6.0.0"
 splashscreen = "1.2.0"
 timber = "5.0.1"
+miuix = "0.9.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -25,8 +24,6 @@ androidx-lifecycle-vm-compose = { group = "androidx.lifecycle", name = "lifecycl
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 androidx-lifecycle-service = { group = "androidx.lifecycle", name = "lifecycle-service", version.ref = "lifecycle" }
 
-androidx-nav-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "nav" }
-
 androidx-datastore-prefs = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -35,12 +32,7 @@ compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 compose-animation = { group = "androidx.compose.animation", name = "animation" }
-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-compose-material3-adaptive-nav = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite" }
-compose-material3-windowsize = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
-
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
@@ -50,6 +42,12 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 
 libsu-core = { group = "com.github.topjohnwu.libsu", name = "core", version.ref = "libsu" }
 libsu-service = { group = "com.github.topjohnwu.libsu", name = "service", version.ref = "libsu" }
+
+miuix-ui = { group = "top.yukonga.miuix.kmp", name = "miuix-ui-android", version.ref = "miuix" }
+miuix-preference = { group = "top.yukonga.miuix.kmp", name = "miuix-preference", version.ref = "miuix" }
+miuix-nav = { group = "top.yukonga.miuix.kmp", name = "miuix-nav-android", version.ref = "miuix" }
+miuix-icons = { group = "top.yukonga.miuix.kmp", name = "miuix-icons-android", version.ref = "miuix" }
+miuix-blur = { group = "top.yukonga.miuix.kmp", name = "miuix-blur-android", version.ref = "miuix" }
 
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 

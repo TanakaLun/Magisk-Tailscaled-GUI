@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- 主题：交给 Compose dynamicColorScheme 处理颜色，这里只设最少必要项 -->
+    <!-- 主题：颜色交给 Compose MiuixTheme 处理，这里只设最少必要项 -->
     <style name="Theme.TailControl" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>

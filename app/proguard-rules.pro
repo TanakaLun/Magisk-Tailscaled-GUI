@@ -1,11 +1,11 @@
 # kotlinx.serialization
 -keepattributes *Annotation*, InnerClasses
 -dontnote kotlinx.serialization.AnnotationsKt
--keep,includedescriptorclasses class top.cenmin.tailcontrol.**$$serializer { *; }
--keepclassmembers class top.cenmin.tailcontrol.** {
+-keep,includedescriptorclasses class io.github.tanakalun.tailcontrol.**$$serializer { *; }
+-keepclassmembers class io.github.tanakalun.tailcontrol.** {
     *** Companion;
 }
--keepclasseswithmembers class top.cenmin.tailcontrol.** {
+-keepclasseswithmembers class io.github.tanakalun.tailcontrol.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
 

@@ -33,6 +33,10 @@
     <string name="exit">退出</string>
     <string name="loading">加载中…</string>
     <string name="refresh">刷新</string>
+    <string name="refresh_pulling">下拉刷新</string>
+    <string name="refresh_release">松开立即刷新</string>
+    <string name="refresh_refreshing">正在刷新…</string>
+    <string name="refresh_complete">刷新完成</string>
     <string name="retry">重试</string>
     <string name="execute">执行</string>
     <string name="save">保存</string>
@@ -51,6 +55,7 @@
 
     <!-- Root -->
     <string name="get_root_failed_title">未授予 Root</string>
+    <string name="root_retry">重试</string>
     <string name="get_root_failed_msg">当前设备未提供 Root 权限，应用无法正常运行。</string>
 
     <!-- Home -->
@@ -89,10 +94,18 @@
     <string name="hostname_set_descripe">自定义主机名；留空则保持原值</string>
     <string name="custom_parameters">自定义参数</string>
     <string name="save_failed">保存失败</string>
+    <string name="settings_group_connection">连接</string>
+    <string name="settings_group_diagnostics">诊断</string>
+    <string name="settings_group_appearance">外观</string>
+    <string name="settings_group_more">更多</string>
+    <string name="settings_group_about">关于</string>
+    <string name="drop_group_receive">接收</string>
+    <string name="drop_group_diagnostics">诊断</string>
     <string name="save_failed_text">tailscale set 返回错误</string>
     <string name="save_success">保存成功</string>
-    <string name="dynamic_color">动态主题色 (Material You)</string>
-    <string name="dynamic_color_desc">跟随系统壁纸（Android 12+）</string>
+    <string name="theme_mode">主题模式</string>
+    <string name="enable_blur">启用模糊效果</string>
+    <string name="enable_blur_desc">为应用栏与导航栏应用纹理模糊效果</string>
     <string name="binary_path_title">二进制路径</string>
     <string name="binary_path_desc">实际由 root shell 通过 PATH 解析得到</string>
     <string name="binary_path_missing">未找到</string>
@@ -203,6 +216,7 @@
     <string name="netcheck_history_empty">还没有记录——先跑一次检测。</string>
 
     <!-- Logs -->
+    <string name="log_source">日志源</string>
     <string name="log_source_app">App</string>
     <string name="log_source_tailscaled">tailscaled.log</string>
     <string name="log_source_runs">runs.log</string>
