@@ -209,7 +209,7 @@ fun LogScreen(
                 isRefreshing = false,
                 pullToRefreshState = pullToRefreshState,
                 onRefresh = viewModel::loadEarlier,
-                contentPadding = PaddingValues(top = padding.calculateTopPadding() + 6.dp),
+                contentPadding = PaddingValues(0.dp),
             ) {
                 LazyColumn(
                     state = listState,
@@ -219,6 +219,7 @@ fun LogScreen(
                         .overScrollVertical()
                         .scrollEndHaptic(),
                     contentPadding = PaddingValues(
+                        top = padding.calculateTopPadding() + 6.dp,
                         start = padding.calculateStartPadding(layoutDirection),
                         end = padding.calculateEndPadding(layoutDirection),
                         bottom = padding.calculateBottomPadding() + 16.dp,

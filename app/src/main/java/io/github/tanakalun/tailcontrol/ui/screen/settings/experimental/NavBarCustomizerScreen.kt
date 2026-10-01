@@ -68,7 +68,6 @@ fun NavBarCustomizerScreen(
                                 },
                                 imageVector = MiuixIcons.Back,
                                 contentDescription = stringResource(R.string.back),
-                                tint = MiuixTheme.colorScheme.onSurface,
                             )
                         }
                     },
@@ -84,7 +83,6 @@ fun NavBarCustomizerScreen(
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(bottom = 80.dp)
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .verticalScroll(rememberScrollState())
                 .overScrollVertical()
@@ -117,7 +115,7 @@ fun NavBarCustomizerScreen(
                     }
                 }
             }
-            Spacer(Modifier.height(padding.calculateBottomPadding()))
+            Spacer(Modifier.height(padding.calculateBottomPadding() + 12.dp))
         }
         }
     }
